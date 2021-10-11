@@ -16,16 +16,11 @@ const Banner = () => {
           Math.floor(Math.random() * request.data.results.length - 1) + 1
         ],
       );
-      console.log(
-        Math.floor(Math.random() * request.data.results.length - 1) + 1,
-      );
-      console.log(request.data.results);
-      return request;
     }
     fetchData();
   }, []);
 
-  console.log(movie);
+  // console.log(movie);
 
   function truncate(string, n) {
     return string?.length > n ? `${string.substr(0, n - 1)} ...` : string;
