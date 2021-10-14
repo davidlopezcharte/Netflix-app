@@ -12,9 +12,7 @@ const Banner = () => {
       const request = await axios.get(requests.fetchNetflixOriginals);
 
       setMovie(
-        request.data.results[
-          Math.floor(Math.random() * request.data.results.length - 1) + 1
-        ],
+        request.data.results[Math.floor(Math.random() * request.data.results.length - 1) + 1],
       );
     }
     fetchData();
@@ -48,9 +46,7 @@ const Banner = () => {
             My list
           </button>
         </div>
-        <h1 className="banner__description">
-          {truncate(movie?.overview, 150)}
-        </h1>
+        <h1 className="banner__description">{truncate(movie?.overview, 150)}</h1>
         <div className="banner--fadeBottom" />
       </div>
     </header> // eslint-disable-line
