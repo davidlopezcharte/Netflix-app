@@ -31,11 +31,6 @@ module.exports = {
     'linebreak-style': 0,
     'react/self-closing-comp': 'off',
     // implicit-arrow-linebreak: ["error", "beside"]
-    'import/resolver': {
-      node: {
-        extensions: ['.ts', '.tsx', '.native.js'],
-      },
-    },
   },
 };
 
