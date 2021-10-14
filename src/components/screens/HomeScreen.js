@@ -1,8 +1,8 @@
 import React from 'react';
-import requests from '../library/axios/Requests';
-import Banner from './Banner';
-import Nav from './Nav';
-import Row from './Row';
+import requests from '../../library/axios/Requests';
+import Banner from '../Banner';
+import Nav from '../Nav';
+import Row from '../Row';
 
 const HomeScreen = () => (
   <div>
