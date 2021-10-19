@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import HomeScreen from '../components/screens/HomeScreen';
 import LoginScreen from '../components/screens/LoginScreen';
+import ProfileScreen from '../components/screens/ProfileScreen';
 import { login, logout, selectUser } from '../features/userSlice';
 import { auth } from '../library/firebase';
 
@@ -19,26 +20,28 @@ const AppRouter = () => {
           }),
         );
       } else {
-        dispatch(logout);
+        dispatch(logout());
       }
     });
 
     return unsubscribe;
-  }, []);
+  }, [dispatch]);
   console.log(user);
   return (
     <div>
       <Router>
-        <Switch>
-          {!user ? (
-            <LoginScreen />
-          ) : (
-            // <Route path="/login" component={LoginScreen} />
-            <Route exact path="/">
+        {!user ? (
+          //  <Route path="/login" component={LoginScreen} />
+          <LoginScreen />
+        ) : (
+          <Switch>
+            {/* <Route exact path="/">
               <HomeScreen />
-            </Route>
-          )}
-        </Switch>
+            </Route> */}
+            <Route exact path="/" component={HomeScreen} />
+            <Route path="/profile" component={ProfileScreen} />
+          </Switch>
+        )}
       </Router>
     </div>
   );
