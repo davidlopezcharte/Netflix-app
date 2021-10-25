@@ -4,6 +4,7 @@ import { selectUser } from '../../features/userSlice';
 import { auth } from '../../library/firebase';
 import '../../styles/ProfileScreen.css';
 import Nav from '../Nav';
+import { PlanScreen } from './PlanScreen';
 
 const ProfileScreen = () => {
   const user = useSelector(selectUser);
@@ -26,11 +27,7 @@ const ProfileScreen = () => {
             <h2>{user.email}</h2>
             <div className="profileScreen__plans">
               <h3>Plans</h3>
-              <h4>Renewal date: 04/03/2021</h4>
-              <div className="profileScreen__subscribe">
-                <h4>Netflix Stardard</h4>
-                <button type="button">Subscribe</button>
-              </div>
+              <PlanScreen />
               <button onClick={handleSignout} className="profileScreen__signOut" type="button">
                 Sign Out
               </button>

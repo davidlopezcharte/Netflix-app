@@ -2,15 +2,15 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
-    node: true,
+    node: true
   },
   extends: ['plugin:react/recommended', 'airbnb'],
   parserOptions: {
     ecmaFeatures: {
-      jsx: true,
+      jsx: true
     },
     ecmaVersion: 12,
-    sourceType: 'module',
+    sourceType: 'module'
   },
   plugins: ['react'],
   rules: {
@@ -30,8 +30,9 @@ module.exports = {
     'react/button-has-type': ['error', { reset: true }],
     'linebreak-style': 0,
     'react/self-closing-comp': 'off',
+    'comma-dangle': 'off'
     // implicit-arrow-linebreak: ["error", "beside"]
-  },
+  }
 };
 
 // 'plugin:react/recommended', 'airbnb'
