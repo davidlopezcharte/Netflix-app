@@ -17,8 +17,8 @@ const AppRouter = () => {
         dispatch(
           login({
             uid: userAuth.uid,
-            email: userAuth.email,
-          }),
+            email: userAuth.email
+          })
         );
       } else {
         dispatch(logout());
@@ -27,7 +27,7 @@ const AppRouter = () => {
 
     return unsubscribe;
   }, [dispatch]);
-  console.log(user);
+  console.log(user?.plan);
   return (
     <div>
       <Router>
@@ -36,9 +36,6 @@ const AppRouter = () => {
           <LoginScreen />
         ) : (
           <Switch>
-            {/* <Route exact path="/">
-              <HomeScreen />
-            </Route> */}
             <Route exact path="/" component={HomeScreen} />
             <Route path="/profile" component={ProfileScreen} />
             <Route path="/plan" component={PlanScreen} />
