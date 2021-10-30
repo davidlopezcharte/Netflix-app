@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loadStripe } from '@stripe/stripe-js';
-import { selectUser } from '../../features/userSlice';
+import { selectUser, updatePlan } from '../../features/userSlice';
 import db from '../../library/firebase';
 import '../../styles/PlanScreen.css';
 
@@ -10,10 +10,11 @@ export const PlanScreen = () => {
   const [subscription, setSubscription] = useState(null);
   const user = useSelector(selectUser);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     db.collection('customers')
-      .doc(user.uid)
+      .doc(user?.uid)
       .collection('subscriptions')
       .get()
       .then((querySnapshot) => {
@@ -27,7 +28,7 @@ export const PlanScreen = () => {
           });
         });
       });
-  }, [user.uid]);
+  }, []);
 
   console.log(new Date(subscription?.current_period_end));
 
@@ -39,14 +40,10 @@ export const PlanScreen = () => {
       .where('active', '==', true)
       .get()
       .then((querySnapshot) => {
-        // console.log(querySnapshot);
         const product = {};
         querySnapshot.forEach(async (productDoc) => {
-          // console.log(productDoc);
           product[productDoc.id] = productDoc.data();
-          // console.log(product);
           const priceSnap = await productDoc.ref.collection('prices').get();
-          // console.log(priceSnap.docs);
           priceSnap.docs.forEach((price) => {
             product[productDoc.id].prices = {
               priceId: price.id,
@@ -56,10 +53,16 @@ export const PlanScreen = () => {
         });
         setProducts(product);
       });
-  }, []);
+  }, [user]);
+
+  useEffect(() => {
+    if (subscription) {
+      dispatch(updatePlan(subscription.role));
+    }
+  }, [subscription]);
 
   const loadCheckout = async (priceId) => {
-    setLoading(false);
+    setLoading(true);
     const docRef = await db
       .collection('customers')
       .doc(user.uid)
@@ -118,7 +121,7 @@ export const PlanScreen = () => {
                   <button
                     className={!isCurrentPackage ? 'planScreen__button' : ''}
                     type="button"
-                    disabled={!loading}
+                    disabled={loading}
                     onClick={() => !isCurrentPackage && loadCheckout(productData.prices.priceId)}
                   >
                     {isCurrentPackage ? 'Current Plan' : 'Subscribe'}
