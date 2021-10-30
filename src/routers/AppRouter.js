@@ -1,16 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Redirect, Route } from 'react-router-dom';
 import HomeScreen from '../components/screens/HomeScreen';
 import LoginScreen from '../components/screens/LoginScreen';
-import { PlanScreen } from '../components/screens/PlanScreen';
 import ProfileScreen from '../components/screens/ProfileScreen';
 import { login, logout, selectUser } from '../features/userSlice';
 import { auth } from '../library/firebase';
+// import AuthRoute from './AuthRoute';
+// import { PrivateRoute } from './PrivateRoute';
+// import { PublicRoute } from './PublicRoute';
 
 const AppRouter = () => {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  console.log(isLoggedIn);
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((userAuth) => {
       if (userAuth) {
@@ -20,25 +25,28 @@ const AppRouter = () => {
             email: userAuth.email
           })
         );
+        setIsLoggedIn(true);
       } else {
         dispatch(logout());
+        setIsLoggedIn(false);
       }
     });
-
     return unsubscribe;
   }, [dispatch]);
-  console.log(user?.plan);
+
   return (
     <div>
       <Router>
         {!user ? (
-          //  <Route path="/login" component={LoginScreen} />
           <LoginScreen />
         ) : (
           <Switch>
-            <Route exact path="/" component={HomeScreen} />
             <Route path="/profile" component={ProfileScreen} />
-            <Route path="/plan" component={PlanScreen} />
+            {user.plan ? (
+              <Route exact path="/" component={HomeScreen} />
+            ) : (
+              <Redirect to="/profile" />
+            )}
           </Switch>
         )}
       </Router>
@@ -47,3 +55,14 @@ const AppRouter = () => {
 };
 
 export default AppRouter;
+
+/* <Router>
+      <div>
+        <Switch>
+          <PublicRoute path="/auth/login" component={LoginScreen} isLoggedIn={isLoggedIn} />
+          <PrivateRoute path="/" component={AuthRoute} isLoggedIn={isLoggedIn} />
+
+          <Redirect to="/auth/login" />
+        </Switch>
+      </div>
+    </Router> */

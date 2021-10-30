@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-// import { fetchCount } from './counter/counterAPI';
 
 const initialState = {
-  user: null,
+  user: null
 };
 
 export const userSlice = createSlice({
@@ -16,10 +15,13 @@ export const userSlice = createSlice({
     logout: (state) => {
       state.user = null;
     },
-  },
+    updatePlan: (state, action) => {
+      state.user.plan = action.payload;
+    }
+  }
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logout, updatePlan } = userSlice.actions;
 
 export const selectUser = (state) => state.user.user;
 
