@@ -1,28 +1,60 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import Swal from 'sweetalert2';
 import { auth } from '../../library/firebase';
-
 import '../../styles/SignupScreen.css';
 
-const SignupScreen = () => {
+console.log(Swal);
+const SignupScreen = ({ email }) => {
   const emailRef = useRef(null);
-  console.log(emailRef);
   const passwordRef = useRef(null);
-  console.log(passwordRef);
+  const [signIn, setSignIn] = useState(true);
+  console.log(signIn);
 
+  useEffect(() => {
+    if (email) {
+      emailRef.current.value = email;
+    }
+  }, [email]);
   const register = (e) => {
     e.preventDefault();
     auth
       .createUserWithEmailAndPassword(emailRef.current.value, passwordRef.current.value)
       .then((user) => console.log(user))
-      .catch((err) => console.log(err));
+      .catch(({ message }) => {
+        if (message) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: message,
+            confirmButtonText: 'Ok'
+          });
+        }
+      });
   };
 
-  const singIn = (e) => {
+  const handleSignIn = (e) => {
     e.preventDefault();
     auth
       .signInWithEmailAndPassword(emailRef.current.value, passwordRef.current.value)
       .then((user) => console.log(user))
-      .catch((err) => console.log(err));
+      .catch(({ message }) => {
+        if (message) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: message,
+            confirmButtonText: 'Ok'
+          });
+        }
+      });
+  };
+
+  const signUpClick = () => {
+    setSignIn(false);
+  };
+
+  const signInClick = () => {
+    setSignIn(true);
   };
   return (
     <div className="signupScreen">
@@ -30,14 +62,43 @@ const SignupScreen = () => {
         <h1>Sign In</h1>
         <input type="email" ref={emailRef} placeholder="Email"></input>
         <input type="password" ref={passwordRef} placeholder="Password"></input>
-        <button type="submit" onClick={singIn}>
-          Sign In
-        </button>
+        {signIn ? (
+          <button type="submit" onClick={handleSignIn}>
+            Sign In
+          </button>
+        ) : (
+          <button type="submit" onClick={register}>
+            Sign Up
+          </button>
+        )}
         <h4>
-          <span className="signupScreen__gray">New to Netflix? </span>
-          <span className="signupScreen__link" onClick={register}>
-            Sign up now.
-          </span>
+          {signIn ? (
+            <>
+              <span className="signupScreen__gray">New to Netflix? </span>
+              <span
+                role="button"
+                tabIndex={0}
+                onKeyDown={signUpClick}
+                className="signupScreen__link"
+                onClick={signUpClick}
+              >
+                Sign up now.
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="signupScreen__gray">Already Registered? </span>
+              <span
+                role="button"
+                tabIndex={0}
+                onKeyDown={signInClick}
+                className="signupScreen__link"
+                onClick={signInClick}
+              >
+                Sign in now.
+              </span>
+            </>
+          )}
         </h4>
       </form>
     </div>
