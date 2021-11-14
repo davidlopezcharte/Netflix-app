@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import '../../styles/LoginScreen.css';
 import SignupScreen from './SignupScreen';
 
 const LoginScreen = () => {
   const [signIn, setSignIn] = useState(false);
+  const emailRef = useRef(null);
+
   const handleClick = (e) => {
     e.preventDefault();
     setSignIn(true);
@@ -27,7 +29,7 @@ const LoginScreen = () => {
 
       <div className="loginScreen__body">
         {signIn ? (
-          <SignupScreen />
+          <SignupScreen email={emailRef.current?.value} />
         ) : (
           <>
             <h1>Unlimited films, TV programmes and more.</h1>
@@ -35,7 +37,7 @@ const LoginScreen = () => {
             <h3>Ready to Watch? Enter your email to create or restart your membership</h3>
             <div className="loginScreen__input">
               <form>
-                <input type="email" placeholder="Email addres" />
+                <input type="email" placeholder="Email addres" ref={emailRef} />
                 <button onClick={handleClick} className="loginScreen__getStarted" type="submit">
                   GET STARTED
                 </button>
