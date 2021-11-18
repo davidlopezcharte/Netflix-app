@@ -8,7 +8,6 @@ import { PlanScreen } from './PlanScreen';
 
 const ProfileScreen = () => {
   const user = useSelector(selectUser);
-  console.log(user);
 
   const handleSignout = () => {
     auth.signOut();

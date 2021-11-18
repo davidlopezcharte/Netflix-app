@@ -10,7 +10,7 @@ const LoginScreen = () => {
     e.preventDefault();
     setSignIn(true);
   };
-  console.log(signIn);
+
   return (
     <div className="loginScreen">
       <div className="loginScreen__background">
