@@ -18,9 +18,7 @@ export const PlanScreen = () => {
       .collection('subscriptions')
       .get()
       .then((querySnapshot) => {
-        console.log(querySnapshot);
         querySnapshot.forEach(async (subscriptions) => {
-          console.log(subscriptions);
           setSubscription({
             role: subscriptions.data().role,
             current_period_end: subscriptions.data().current_period_end.seconds,
@@ -29,8 +27,6 @@ export const PlanScreen = () => {
         });
       });
   }, []);
-
-  console.log(new Date(subscription?.current_period_end));
 
   useEffect(() => {
     setTimeout(() => {
@@ -78,6 +74,7 @@ export const PlanScreen = () => {
       if (error) {
         // Show an error to your customer and
         // inspect your Cloud Function logs in the Firebase console.
+        // eslint-disable-next-line no-alert
         alert(`An error ocurred: ${error.message}`);
       }
 
@@ -135,42 +132,3 @@ export const PlanScreen = () => {
     </>
   );
 };
-
-/* <div className="PlanScreen">
-      {loading && (
-        <div className="d-flex justify-content-center">
-          <div className="spinner-border loader" role="status"></div>
-        </div>
-      )}
-
-      {subscription && (
-        <p>
-          Renewal Date:
-          {'  '}
-          {new Date(subscription?.current_period_end * 1000).toLocaleDateString()}
-        </p>
-      )}
-      {Object.entries(products).map(([productId, productData]) => {
-        console.log(productData);
-        console.log(productId);
-
-        const isCurrentPackage = productData?.name?.toLowerCase().includes(subscription?.role);
-        console.log(isCurrentPackage);
-        return (
-          <div className="planScreen__plan" key={productId}>
-            <div className="planScreen__info">
-              <h5>{productData.name}</h5>
-              <h6>{productData.description}</h6>
-            </div>
-            <button
-              className={!isCurrentPackage ? 'planScreen__button' : ''}
-              type="button"
-              disabled={loading}
-              onClick={() => !isCurrentPackage && loadCheckout(productData.prices.priceId)}
-            >
-              {isCurrentPackage ? 'Current Plan' : 'Subscribe'}
-            </button>
-          </div>
-        );
-      })}
-    </div> */

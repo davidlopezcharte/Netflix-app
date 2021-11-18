@@ -3,12 +3,10 @@ import Swal from 'sweetalert2';
 import { auth } from '../../library/firebase';
 import '../../styles/SignupScreen.css';
 
-console.log(Swal);
 const SignupScreen = ({ email }) => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const [signIn, setSignIn] = useState(true);
-  console.log(signIn);
 
   useEffect(() => {
     if (email) {
@@ -19,7 +17,7 @@ const SignupScreen = ({ email }) => {
     e.preventDefault();
     auth
       .createUserWithEmailAndPassword(emailRef.current.value, passwordRef.current.value)
-      .then((user) => console.log(user))
+      .then()
       .catch(({ message }) => {
         if (message) {
           Swal.fire({
@@ -36,7 +34,7 @@ const SignupScreen = ({ email }) => {
     e.preventDefault();
     auth
       .signInWithEmailAndPassword(emailRef.current.value, passwordRef.current.value)
-      .then((user) => console.log(user))
+      .then()
       .catch(({ message }) => {
         if (message) {
           Swal.fire({

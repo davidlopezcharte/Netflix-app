@@ -13,8 +13,6 @@ const Row = ({ title, fetchUrl, isLargeRow = false }) => {
     };
     fetchData();
   }, [fetchUrl]);
-  console.log(movies);
-  // console.log(isLargeRow);
 
   return (
     <div className="row">
